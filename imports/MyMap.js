@@ -10,6 +10,7 @@ function handleMapOptions() {
   var originalLatLng = latLng;    
   //console.log('reactiveVar',latLng.get());
   Tracker.autorun(function(computation){
+    latLng = Geolocation.latLng();
         if (latLng.get() != originalLatLng.get()) {
             computation.stop();
             console.log(latLng.get());
