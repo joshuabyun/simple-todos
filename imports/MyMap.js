@@ -2,17 +2,21 @@ import React from 'react';
 import GoogleMap from './lib/GoogleMap';
 import { ReactiveVar } from 'meteor/reactive-var'
 import { Tracker } from 'meteor/tracker'
+import { Geolocation } from 'meteor/mdg:geolocation';
 
 function handleMapOptions() {
-  return {
-    center: new google.maps.LatLng(-37.8136, 144.9631),
-    zoom: 8,
-  }; 
-//    var latLng = Geolocation.latLng();
-//    return {
-//        center: new google.maps.LatLng(latLng.lat, latLng.lng),
-//        zoom: 8,
-//    }; 
+  //var latLng = Geolocation.latLng();
+  var latLng = new ReactiveVar({lat: -37.8136, lng: 144.9631});
+  var originalLatLng = latLng;    
+  //console.log('reactiveVar',latLng.get());
+  Tracker.autorun(function(computation){
+        if (latLng.get() != originalLatLng.get()) {
+            computation.stop();
+            console.log(latLng.get());
+            var lat = latLng.curValue.lat;
+            var lng = latLng.curValue.lng;
+        }
+    });
 }
 
 function handleOnReady(name) {
